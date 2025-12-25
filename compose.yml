@@ -1,0 +1,18 @@
+services:
+  pyspark-gf:
+    build:
+      context: .
+    container_name: pyspark-gf # custom container name 
+    command: start-notebook.sh --NotebookApp.token='' # removes the need for access token. Only do this for development work in your local machine
+    environment:
+      - SPARK_WORKER_CORES=4
+      - SPARK_WORKER_MEMORY=8G
+      - SPARK_DRIVER_MEMORY=8G
+      - SPARK_EXECUTOR_MEMORY=8G
+    ports:
+      - "8888:8888" # Jupyter UI
+      - "4040:4040" # Spark UI. Every new context is on an incremental port (4041, 4042, etc)
+    volumes:
+      - "./mnt/:/home/jovyan/" # map a local folder to the Jupyter workspace folder
+      - "../.data/:/home/jovyan/input/" # map a local folder to the Jupyter workspace folder
+      
